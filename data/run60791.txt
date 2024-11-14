@@ -1,0 +1,4 @@
+/lustre/collider/siew/study_v2/spacer/data/run60791/calospacer_run60791_gridRun/2024-07-08-11-01-45/data/gm2offline_ana_81312544_60791.00133.root
+/lustre/collider/siew/study_v2/spacer/data/run60791/calospacer_run60791_gridRun/2024-07-08-11-01-45/data/gm2offline_ana_81312545_60791.00108.root
+/lustre/collider/siew/study_v2/spacer/data/run60791/calospacer_run60791_gridRun/2024-07-08-11-01-45/data/gm2offline_ana_81312546_60791.00127.root
+/lustre/collider/siew/study_v2/spacer/data/run60791/calospacer_run60791_gridRun/2024-07-08-11-01-45/data/gm2offline_ana_81312547_60791.00003.root

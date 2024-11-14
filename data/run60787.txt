@@ -1,0 +1,15 @@
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312488_60787.00378.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312489_60787.00259.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312490_60787.00443.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312491_60787.00245.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312492_60787.00444.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312493_60787.00013.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312494_60787.00326.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312495_60787.00369.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312496_60787.00147.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312497_60787.00472.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312498_60787.00284.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312499_60787.00065.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312500_60787.00365.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312501_60787.00243.root
+/lustre/collider/siew/study_v2/spacer/data/run60787/calospacer_run60787_gridRun/2024-07-08-10-53-57/data/gm2offline_ana_81312502_60787.00429.root
