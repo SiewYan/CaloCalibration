@@ -9,8 +9,11 @@ cd `pwd`
 git clone git@github.com:SiewYan/CaloCalibration.git
 cd CaloCalibration
 # install blinder
+make init
 make install-blinder
 ```
+
+Note: run ```make init``` every time you run the code.
 
 ## Projects
 
