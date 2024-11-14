@@ -69,7 +69,6 @@ The art format files are available:
 | 62.5    | 9, 20    |
 | 75.0    | 11, 16, 21    |
 
-
  - MC : ```/lustre/collider/siew/study_v2/spacer/art-skim```
 
  - offset-0p00mm,  offset-12p5mm, offset-25p0mm,  offset-37p5mm,  offset-50p0mm,  offset-62p5mm,  offset-75p0mm
