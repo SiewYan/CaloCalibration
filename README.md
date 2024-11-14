@@ -9,8 +9,11 @@ cd `pwd`
 git clone git@github.com:SiewYan/CaloCalibration.git
 cd CaloCalibration
 # install blinder
+make init
 make install-blinder
 ```
+
+Note: run ```make init``` every time you run the code.
 
 ## Projects
 
@@ -41,6 +44,35 @@ spectra between data and simulation.
 4. **Energy Calibration V2 strategy** : In the time window, energy threshold (1600 MeV for MC ; 1700 MeV for data), optimized energy range (via quantile style dual-directional scan); perform a unidimensional scan using KS test on energy spectra at xtal level.
 5. **Energy Scale validation** : Validates the optimized energy scale, comparing data and MC, with normalization performed on data ( MC/Data(Eenergy Range) ) in the optimized range.
 
-## Goal of the study
+### Goal of the study
 
 The obtained energy scale depicts the difference between data and MC, in which the data loss/gain signifies unaccounted effects. We trust the MC to be the truth.
+
+
+### Technical walkthrough
+
+based on spacer calo study
+
+#### Skim
+
+The art format files are available:
+
+ - Data : ```/lustre/collider/siew/study_v2/spacer/data```
+ - **Spacer Run** : 60866 , 60867 , 60868 , 60869 , 60870 , 60871
+ - **Reference Run** : 60787 , 60788 , 60789 , 60790 , 60791
+
+
+| Spacer depth    | Calorimeters |
+| -------- | ------- |
+| 0.0    | 10, 14, 17    |
+| 12.5    | 1, 5, 12, 19     |
+| 25.0    | 2, 6, 13, 22    |
+| 37.5    | 3, 7, 18, 23    |
+| 50.0    | 4, 8, 15, 24    |
+| 62.5    | 9, 20    |
+| 75.0    | 11, 16, 21    |
+
+ - MC : ```/lustre/collider/siew/study_v2/spacer/art-skim```
+
+ - offset-0p00mm,  offset-12p5mm, offset-25p0mm,  offset-37p5mm,  offset-50p0mm,  offset-62p5mm,  offset-75p0mm
+
