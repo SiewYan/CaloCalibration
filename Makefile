@@ -66,3 +66,6 @@ install-blinder:
 
 clean-blinder:
 	rm -rf plugins/blinder/Blinders.o plugins/blinder/libBlinders.so  plugins/blinder/packages plugins/blinder/rlib plugins/blinder/testBlinding.exe 
+
+init:
+	bash -c "echo source /cvmfs/sft.cern.ch/lcg/views/LCG_102a/x86_64-centos7-gcc11-opt/setup.sh"

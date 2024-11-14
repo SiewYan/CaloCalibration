@@ -1,0 +1,18 @@
+input_line_31:2:28: error: use of undeclared identifier 'calo_Index_v1'
+auto lambda1 = [](){return calo_Index_v1
+                           ^
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  
+RDataFrame: An error occurred during just-in-time compilation. The lines above might indicate the cause of the crash
+ All RDF objects that have not run an event loop yet should be considered in an invalid state.
+
+/home/siew/gm2/df-spectrum/studies/phase-study/spacer/run_phaseval.sh: line 18: 43144 Aborted                 /home/siew/gm2/df-spectrum/bin/phase -f /home/siew/gm2/df-spectrum/data/spacer/pruned/data-reference.txt -o /home/siew/gm2/df-spectrum/studies/phase-study/spacer/data-reference_phase.root --phi0 4.12135 --t_start 63.9742 --t_end 605.243 --omegaa 1.43942 --ncore 3
+input_line_31:2:28: error: use of undeclared identifier 'calo_Index_v1'
+auto lambda1 = [](){return calo_Index_v1
+                           ^
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  
+RDataFrame: An error occurred during just-in-time compilation. The lines above might indicate the cause of the crash
+ All RDF objects that have not run an event loop yet should be considered in an invalid state.
+
+/home/siew/gm2/df-spectrum/studies/phase-study/spacer/run_phaseval.sh: line 28: 43166 Aborted                 /home/siew/gm2/df-spectrum/bin/phase -f /home/siew/gm2/df-spectrum/data/spacer/pruned/data-spacer.txt -o /home/siew/gm2/df-spectrum/studies/phase-study/spacer/data-spacer_phase.root --phi0 4.12313 --t_start 63.9766 --t_end 605.256 --omegaa 1.4394 --ncore 3

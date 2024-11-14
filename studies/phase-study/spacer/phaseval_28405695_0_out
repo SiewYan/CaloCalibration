@@ -1,0 +1,30 @@
+inFile   : /home/siew/gm2/df-spectrum/data/spacer/pruned/data-reference.txt
+outPath  : /home/siew/gm2/df-spectrum/studies/phase-study/spacer/data-reference_phase.root
+thePhi   : 4.12135
+t0       : 63.9742
+t1       : 605.243
+isMC     : 0
+ncore    : 3
+Multi-threading, using ncore : 3
+
+On-the-fly computed variables
+Omega a        : 1.43942 MHz
+t0             : 63.9742 us corresponds to period n : 13
+t1             : 605.243 us corresponds to period n : 137
+t3             : 72.7045 us 
+elapsed period : 124
+inFile   : /home/siew/gm2/df-spectrum/data/spacer/pruned/data-spacer.txt
+outPath  : /home/siew/gm2/df-spectrum/studies/phase-study/spacer/data-spacer_phase.root
+thePhi   : 4.12313
+t0       : 63.9766
+t1       : 605.256
+isMC     : 0
+ncore    : 3
+Multi-threading, using ncore : 3
+
+On-the-fly computed variables
+Omega a        : 1.4394 MHz
+t0             : 63.9766 us corresponds to period n : 14
+t1             : 605.256 us corresponds to period n : 138
+t3             : 77.0719 us 
+elapsed period : 124

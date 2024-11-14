@@ -1,0 +1,395 @@
+#include <TFile.h>
+#include <TROOT.h>
+#include <TH1D.h>
+#include <TChain.h>
+#include <TTreeReader.h>
+#include <TTreeReaderValue.h>
+#include <TTreeReaderArray.h>
+#include <TTreeReaderArray.h>
+#include "ROOT/RVec.hxx"
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include "TMath.h"
+#include "tclap/CmdLine.h"
+#include <TStopwatch.h>
+#include <filesystem>
+#include <tuple>
+#include <map>
+
+using namespace std;
+using namespace ROOT::VecOps;
+namespace fs = std::filesystem;
+
+typedef tuple<double,double,double,double> Dtuple;
+//typedef tuple<pair<double,double>,TH1D*,TGraph*> results;
+
+double twopi = 2*TMath::Pi();
+//TH1DModel energy1  = TH1DModel( "xtalenergy"  , "Crystal Energy Spectrum; Crystal Energy [MeV]; Events" , 31, 0, 3100);
+
+int nbin=31;
+double xmin=0.;
+double xmax=3100.;
+
+Dtuple getParam(std::string &condIn){
+
+  //
+  Dtuple row;
+  ifstream in( condIn );
+  double omega_, phase_, t0_, t1_;
+  while ( in >> omega_ >> phase_ >> t0_ >> t1_ ){
+    row = make_tuple(omega_ , phase_, t0_, t1_);
+    break;
+  }
+  
+  return row;
+}
+
+void initReader(TChain* ch_in, const std::string& txtIn){
+  
+  ifstream file(txtIn);
+  string fstr;
+  int count=0;
+  while (getline(file, fstr)) {
+    if(fstr.find('#')==std::string::npos){
+      ch_in->Add(fstr.c_str());
+      count++;
+    }
+  }
+  cout<<"number of file consumed : "<< count <<endl;
+  
+}
+
+// v1 for data (scaler type calo number)
+// v2 for mc (vector type calo number)
+TH1D* getHisto_data(TTreeReader& reader, double start, double end, int ncalo_, int nxtal_){
+
+  // in C++ ROOT, we have to predefine every branch
+  reader.Restart();
+  TTreeReaderValue<unsigned int> calo_Index_v1 (reader , "calo_Index_v1" );
+  TTreeReaderValue<double>       cluster_time  (reader , "cluster_time"  );
+  TTreeReaderArray<int>          calo_Index_v2 (reader , "calo_Index_v2" );
+  TTreeReaderArray<int>          xtal_Index    (reader , "xtal_Index"    );
+  TTreeReaderArray<double>       xtal_energy   (reader , "xtal_energy"   );
+  
+  TH1D* hist_en = new TH1D("data_range", Form("Data Calo %i Xtal %i ; Crystal Energy [MeV]; Events", ncalo_, nxtal_),nbin,xmin,xmax);
+  
+  unsigned int nevents = 0;
+  while (reader.Next()) {
+    
+    //cout<<"event number : " << nevents << endl;
+
+    // time selection
+    if ( *cluster_time < start ) continue;
+    if ( *cluster_time > end ) continue;
+    
+    //cout<<"caloIdx_v1   : " << *calo_Index_v1 << endl;
+    int ucalo_Index_v1 = (int) *calo_Index_v1;
+    
+    // calo number selection
+    if (ucalo_Index_v1 != ncalo_) continue;
+    
+    int size_ = xtal_Index.GetSize();
+    for (int m = 0; m < size_ ; m++) {
+      int xtalIdx = xtal_Index[m];
+      double energy = xtal_energy[m];
+      // xtal number selection
+      if (xtalIdx != nxtal_) continue;
+      hist_en->Fill(energy);
+    }
+    
+    nevents+=1;
+  } // while
+
+  return hist_en;
+ 
+}
+
+
+// v1 for data (scaler type calo number)
+// v2 for mc (vector type calo number)
+TH1D* getHisto_mc(TTreeReader& reader, double start, double end, int ncalo_, int nxtal_){
+
+  // in C++ ROOT, we have to predefine every branch
+  reader.Restart();
+  TTreeReaderValue<int>          calo_Index_v1 (reader , "calo_Index_v1" );
+  TTreeReaderValue<double>       cluster_time  (reader , "cluster_time"  );
+  TTreeReaderArray<int>          calo_Index_v2 (reader , "calo_Index_v2" );
+  TTreeReaderArray<int>          xtal_Index    (reader , "xtal_Index"    );
+  TTreeReaderArray<double>       xtal_energy   (reader , "xtal_energy"   );
+  
+  TH1D* hist_en = new TH1D("mc_range", Form("Data Calo %i Xtal %i ; Crystal Energy [MeV]; Events", ncalo_, nxtal_),nbin,xmin,xmax);
+  
+  unsigned int nevents = 0;
+  while (reader.Next()) {
+    
+    //cout<<"event number : " << nevents << endl;
+
+    // time selection
+    if ( *cluster_time < start ) continue;
+    if ( *cluster_time > end ) continue;
+    
+    // same size with calo, xtal, and energy
+    int size_ = xtal_Index.GetSize();
+    for (int n = 0; n < size_ ; n++) {
+      int ncalo_v2 = calo_Index_v2[n];
+      int xtalIdx = xtal_Index[n];
+      double energy =	xtal_energy[n];
+      
+      // calo number selection
+      if (ncalo_v2 != ncalo_) continue;
+      // xtal number selection
+      if (xtalIdx != nxtal_) continue;
+      
+      hist_en->Fill(energy);
+      
+    } // n
+    nevents+=1;
+  } // while
+  
+  return hist_en;
+  
+}
+
+void getBinX(TH1D* hist, double ilow_, double jup_, double total_integral){
+
+  // anatomy of histogram
+  int nbin = hist->GetXaxis()->GetNbins();
+  int binmax = hist->FindLastBinAbove();
+  double xmax = hist->GetXaxis()->GetBinCenter(binmax);
+  double halfbin = hist->GetXaxis()->GetBinCenter(1);
+  
+  // xcontent
+  double xcontent_low = total_integral*ilow_;
+  double xcontent_up  = total_integral*jup_;
+
+  cout<<"binmax : " << binmax << endl;
+  cout<<"xmax   : " << xmax << endl;
+
+  vector<pair<int,double>> quantile_bin;
+  int count=0;
+  double content=0.;
+  
+  // going through the bin
+  for( int i = 1; i < nbin+1; i++ ){
+    
+    // xbin value
+    double xbin = halfbin + (hist->GetXaxis()->GetBinCenter(i));
+    // xbin content
+    double xcontent = hist->GetBinContent(i);
+    content+= xcontent;
+    
+    cout << "bin number : " << i <<" ; xbin : "<< halfbin + (hist->GetXaxis()->GetBinCenter(i)) <<" MeV ; xcontent : "<< xcontent <<" ; cumulative content : " << content << " ; percentage : " << (content/total_integral)*100 <<" %"<< endl;
+    
+    // lower bin
+    if ( content >= xcontent_low && count == 0 ){
+      cout << "lower edge bin number : " << i << endl;
+      quantile_bin.push_back( make_pair( i , xbin ) );
+      count++;
+    }
+    
+    // upper bin
+    if ( content >= xcontent_up && count == 1 ){
+      cout << "upper edge bin number : " << i << endl;
+      quantile_bin.push_back( make_pair( i , xbin ) );
+      count++;
+      //break;
+    }
+    
+  } // i
+  
+  cout<<"hdata integral       : " << total_integral << endl;
+  cout<<"hdata lower integral : " << xcontent_low <<" ; the bin number : " << quantile_bin[0].first << " ; xbin : " << quantile_bin[0].second <<" MeV"<<endl;
+  cout<<"hdata upper integral : " << xcontent_up <<" ; the bin number : " << quantile_bin[1].first << " ; xbin : " << quantile_bin[1].second <<" MeV"<<endl;
+  
+}
+
+void loop(TTreeReader& reader){
+
+  reader.Restart();
+
+  //const unsigned int nbytes = 0;
+
+  // in C++ ROOT, we have to predefine every branch
+  TTreeReaderValue<unsigned int> caloIdx_v1(reader, "calo_Index_v1");
+  TTreeReaderArray<int> caloIdx_v2(reader, "calo_Index_v2");
+  TTreeReaderArray<int> xtalIdx(reader, "xtal_Index");
+  TTreeReaderArray<double> xtalE(reader, "xtal_energy");
+
+  unsigned int nevents = 0;
+
+  while (reader.Next()) {
+    
+    //
+    cout<<"event number : " << nevents << endl;
+    cout<<"caloIdx_v1   : " << *caloIdx_v1 << endl;
+    int size_ = xtalIdx.GetSize();    
+    cout<<"array size : "<< size_ << endl;
+    for (int n_ = 0; n_ < size_ ; n_++) {
+      cout<<" n_ : " << n_ << " ; caloIdx_v2 : "<< caloIdx_v2[n_] <<" ; xtalIdx : " << xtalIdx[n_] << " ; xtalE : " << xtalE[n_] << endl;
+    }
+    nevents += 1;
+    if (nevents==100) break;
+  }
+  cout<<"number of event loop : " << nevents << endl;
+  
+}
+
+void scan(TTreeReader& rdata, TTreeReader& rmc, Dtuple& ddata , Dtuple& dmc , int ncalo, int nxtal, bool isKS=true ){
+
+  // reading data
+  //double data_omega  = get<0>(ddata);
+  //double data_phase  = get<1>(ddata);
+  double data_tstart = get<2>(ddata);
+  double data_tend   = get<3>(ddata);
+
+  // reading mc
+  //double mc_omega    = get<0>(dmc);
+  //double mc_phase    = get<1>(dmc);
+  double mc_tstart   = get<2>(dmc);
+  double mc_tend     = get<3>(dmc);
+
+  cout << " -- dataset configuration -- " << endl;
+  //cout << " Data Omega         : " << data_omega   << endl;
+  //cout << " Data Phase         : " << data_phase   << endl;
+  cout << " Data start time    : " << data_tstart  << endl;
+  cout << " Data end time      : " << data_tend    << endl;
+  cout << " -------------------- " << endl;
+  //cout << " MC Omega           : " << mc_omega     << endl;
+  //cout << " MC Phase           : " << mc_phase     << endl;
+  cout << " MC start time      : " << mc_tstart    << endl;
+  cout << " MC end time        : " << mc_tend      << endl;
+
+  //
+  // 2. pass window selection (DATA and MC)
+  // 3. scan on lower and upper range : pick i lower and j upper then get the ks-scale (from 0.5 - 1.5)
+  // 4. make the text output for calo and xtal.
+  //
+  
+  // get the total integral of histogram
+  TH1D* hist_data = getHisto_data( rdata , data_tstart , data_tend , ncalo , nxtal );
+  //TH1D* hist_mc   = getHisto_mc  ( rmc   , mc_tstart   , mc_tend   , ncalo , nxtal );
+
+  // total integral for histograms
+  double int_data = hist_data->Integral();
+  //double int_mc   = hist_mc->Integral();
+  cout<< "hist_data integral : " << int_data << endl;
+  //cout<< "hist_mc integral   : " << int_mc << endl;
+  
+  // loop on range
+  // lower edge
+  double vlow = 1.;
+  int granularity = 7; //7
+  double stepsize = 0.8;
+  for (int i = 1 ; i < granularity ; i++){
+    double ilow = i - (vlow);
+    // upper edge
+    double vhigh = 1.;
+    for (int j = 1 ; j < granularity ; j++){
+      double jup = j - (vhigh);
+
+      if (ilow<jup){
+	cout<<"i : "<< ilow*100 << " % ; j : " << jup*100 <<" %"<<endl;
+      }
+      //getBinX(hist_data, ilow, jup, int_data);
+      //getBinX(hist_mc, ilow, jup, int_mc);
+      
+      vhigh+=stepsize;
+    } // j
+    vlow+=stepsize;
+  } // i
+  
+}
+
+int main(int argc, char **argv) {
+
+  gROOT->SetBatch(true);
+  
+  // start time
+  TStopwatch timer;
+  timer.Start();
+
+  TCLAP::CmdLine cmd( "range analyzer" , ' ' , "1.0" );
+  TCLAP::MultiArg<std::string> dataIn_   ( "d" , "datafiles"        , "Data text file and CSV"        , true  , "string" , cmd );
+  TCLAP::MultiArg<std::string> mcIn_     ( "m" , "mcfiles"          , "MC text file and CSV"          , true  , "string" , cmd );
+  TCLAP::ValueArg<int>         calo_     ( "c" , "ncalo"            , "Calo number"                   , true  ,10  , "int"    , cmd );
+  TCLAP::ValueArg<int>         xtal_     ( "x" , "nxtal"            , "Xtal number"                   , true  ,10   , "int"    , cmd );
+  
+  cmd.parse( argc, argv );
+  vector<std::string> dataFiles = dataIn_.getValue();
+  vector<std::string> mcFiles = mcIn_.getValue();
+  int ncalo = calo_.getValue();
+  int nxtal = xtal_.getValue();
+  
+  auto p = fs::path(dataFiles[1]);
+  //cout << p.parent_path() << endl;
+  
+  // consume
+  TChain *ch_data = new TChain("xtal_study");
+  TChain *ch_mc   = new TChain("xtal_study");
+
+  initReader(ch_data,dataFiles[0]);
+  initReader(ch_mc,mcFiles[0]);
+  
+  TTreeReader data(ch_data);
+  TTreeReader mc(ch_mc);
+  
+  Dtuple dtuple   = getParam(dataFiles[1]);
+  Dtuple mctuple  = getParam(mcFiles[1]);
+  
+  cout << " -- reading text files -- " << endl;
+  cout << " Data list txt      : " << dataFiles[0] << endl;
+  cout << " Data condition txt : " << dataFiles[1] << endl;
+  cout << " MC list txt        : " << mcFiles[0]   << endl;
+  cout << " MC condition txt   : " << mcFiles[1]   << endl;
+  cout << " -- running on -- " << endl;
+  cout << " calorimeter number : " << ncalo        << endl;
+  cout << " crystal number     : " << nxtal        << endl;
+
+  // 1. revert to C++ loop function
+  // 2. pass window selection (DATA and MC)
+  // 3. scan on lower and upper range : pick i lower and j upper then get the ks-scale (from 0.5 - 1.5)
+  // 4. make the text output for calo and xtal.
+  // 5. plot 2D histograms
+
+  scan(data, mc, dtuple, mctuple, ncalo, nxtal);
+  //loop(data);
+  
+  // time window (FOR NOW USE DATA RANGE)
+  //data_rdf = data_rdf.Filter(Form("cluster_time>%f && cluster_time<%f",data_tstart,data_tend),"select time window");
+  //mc_rdf   = mc_rdf.Filter(Form("cluster_time>%f && cluster_time<%f",mc_tstart,mc_tend),"select time window");
+
+  // lower limit ; Q1%, Q2%.
+  //checkrange(hdata,lowerlimit,useQ);
+  
+  //auto hmc   = plotXtal(mc_rdf,ncalo,nxtal,true);
+  //cout<<"HERE"<<endl;
+  //cout<<"hmc integral : " << hmc.GetPtr()->Integral() << endl;
+  
+  // action
+  //xtalpair xtalhist;
+  //xtalptr::iterator iptr = hmc.begin();
+  //while (iptr != hmc.end()) {
+  //  xtalhist[iptr->first] = iptr->second.GetPtr();
+  //}
+  
+  //
+  //fstream fout;
+  //fout.open(Form("%s/range_calo%02d_%s.txt", p.parent_path().c_str(), uncalo_ , p.filename().replace_extension().c_str() ), ios::out ); //| ios::app);
+  
+  //xtalpair::iterator it = xtalhist.begin();
+  //while (it != xtalhist.end()) {
+  //  cout << "Key: " << it->first
+  //	 << ", Value: " << it->second->Integral() << endl;
+  //  ++it;
+  //}
+  
+  //fout << omega << " " << phase << " " << pstart + ((ti+1)*pdiff) << " " << pstart + ((tf+1)*pdiff) << "\n" ;
+
+  timer.Stop();
+  timer.Print();
+  
+  return 0;
+}

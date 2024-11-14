@@ -1,0 +1,11 @@
+Universe   = vanilla
+Executable = /home/siew/gm2/df-spectrum/studies/phase-study/run_phaseval.sh
+Log        = /home/siew/gm2/df-spectrum/studies/phase-study/phaseval_$(Cluster)_$(Process)_log
+Output     = /home/siew/gm2/df-spectrum/studies/phase-study/phaseval_$(Cluster)_$(Process)_out
+Error      = /home/siew/gm2/df-spectrum/studies/phase-study/phaseval_$(Cluster)_$(Process)_err
+request_cpus = 3
+Priority   = 15
+Rank       = (OpSysName == "CentOS")
+Requirements = (Machine != "bl-hd-1.phy.sjtulocal") && (Machine != "bl-hd-2.phy.sjtulocal")
+
+queue
