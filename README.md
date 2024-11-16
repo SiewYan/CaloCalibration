@@ -106,6 +106,21 @@ Source code : ```src/fit.cc```
 
 ```
 make fit
+# execute
+    ./bin/fit \
+	-f $1  \
+	-o /home/siew/gm2/df-spectrum/data/materials/fit-result \
+	-m blinded_5params \
+	-e 1600 \
+	-p 100000 \
+	-p 64.4 \
+	-p 0.4 \
+	-p 0 \
+	-p 5 \
+	--range 30 \
+	--range 500 \
+	-n 15 \
+	--isMC
 ```
 
 Once the fit is run, produces a wiggle plot with the fit on, and the list of extracted parameters, 
@@ -117,16 +132,31 @@ Source code : ```src/phaseval.cc```
 
 ```
 make phase
+# execute
+/home/siew/gm2/df-spectrum/bin/phase \
+    -f /home/siew/gm2/df-spectrum/data/skim/rw_run4f.txt \
+    -o /home/siew/gm2/df-spectrum/studies/phase-study/rw_run4f_phase.root \
+    --phi0 4.11563 \
+    --t_start 63.9721 \
+    --t_end 605.257 \
+    --omegaa 1.43938 \
+    --ncore 3
 ```
 
 ...
 
 #### Run scale optimization
 
+change the outoput directory here: ```https://github.com/SiewYan/CaloCalibration/blob/main/src/scale-optimizer.cc#L37```
 
 ```
 make scale-opt
-
+# execute
+./bin/scale-opt \
+    -d /home/siew/gm2/df-spectrum/data/materials/skim/run4f_test.txt \
+    -d /home/siew/gm2/df-spectrum/data/materials/fit-result/fit_run4F_rw_cond.txt \
+    -m /home/siew/gm2/df-spectrum/data/materials/skim/gasgun_test.txt \
+    -m /home/siew/gm2/df-spectrum/data/materials/fit-result/fit_gasgun_cond.txt \
+    -c 12 \
+    -x 23
 ```
-
-change the outoput directory here: ```https://github.com/SiewYan/CaloCalibration/blob/main/src/scale-optimizer.cc#L37```
