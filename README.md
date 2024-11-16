@@ -51,7 +51,11 @@ The obtained energy scale depicts the difference between data and MC, in which t
 
 ### Technical walkthrough
 
-based on spacer calo study
+The following instruction for a quick walktrough on how to run the analysis. The analysis consists of:
+ - skim
+ - initial phase determination
+ - parameter scan
+ - validation of plot
 
 #### Skim
 
@@ -76,3 +80,53 @@ The art format files are available:
 
  - offset-0p00mm,  offset-12p5mm, offset-25p0mm,  offset-37p5mm,  offset-50p0mm,  offset-62p5mm,  offset-75p0mm
 
+The filelists are prepared in ```CaloCalibration/data/``` ; to run the skim
+
+```
+make skim
+./bin/skim -f /home/siew/gm2/df-spectrum/data/materials/art-skim/test_re.txt \
+	   -o /home/siew/gm2/df-spectrum/test_re.root \
+	   -t "crystalTreeMaker1EP/ntuple" \
+	   -x \
+	   -n 3
+```
+- ```-f``` input list
+- ```-o``` output root file
+- ```-t``` tree name
+-  ```-x``` toggle between Recon East and West
+-  ```-n``` number of core used in processing
+
+Source code : ```src/skim.sh```
+
+#### Initial Phase 
+
+running the fit, example script is in ```test/fit.sh```. Code compilation is needed.
+
+Source code : ```src/fit.cc```
+
+```
+make fit
+```
+
+Once the fit is run, produces a wiggle plot with the fit on, and the list of extracted parameters, 
+store in ```data```; The initial phase will be determined.
+
+Next, do the validation of the phase (optional)
+
+Source code : ```src/phaseval.cc```
+
+```
+make phase
+```
+
+...
+
+#### Run scale optimization
+
+
+```
+make scale-opt
+
+```
+
+change the outoput directory here: ```https://github.com/SiewYan/CaloCalibration/blob/main/src/scale-optimizer.cc#L37```
