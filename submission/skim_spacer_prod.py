@@ -102,13 +102,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # mc
-    for imc in [ 'offset-0p00mm.txt' , 'offset-12p5mm.txt' , 'offset-25p0mm.txt' , 'offset-37p5mm.txt' , 'offset-50p0mm.txt' , 'offset-62p5mm.txt' , 'offset-75p0mm.txt' ]:
-        skim( CWD+"/data/"+imc , OUTDIR+"/"+imc.strip('.txt') , "GGSpacerAnalyzer/g2phase" , 2 )
-        print('sleep for 30 seconds ...')
-        time.sleep(30) # sleep for 30 seconds 
+    #for imc in [ 'offset-0p00mm.txt' , 'offset-12p5mm.txt' , 'offset-25p0mm.txt' , 'offset-37p5mm.txt' , 'offset-50p0mm.txt' , 'offset-62p5mm.txt' , 'offset-75p0mm.txt' ]:
+    #    skim( CWD+"/data/art-files/"+imc , OUTDIR+"/"+imc.strip('.txt') , "GGSpacerAnalyzer/g2phase" , 2 )
+    #    print('sleep for 30 seconds ...')
+    #    time.sleep(30) # sleep for 30 seconds 
 
     # data
-    #for	idata in [ 'reference_run.txt' , 'spacer_run.txt' ]:
-    #    skim( CWD+"/data/"+idata , OUTDIR+"/"+idata.strip('.txt') , "xtalTree/xtal_info" , 2 )
-    #    print('sleep for 30 seconds ...')
-    #    time.sleep(30) # sleep for 30 seconds
+    for	idata in [ 'reference_run.txt' , 'spacer_run.txt' ]:
+        skim( CWD+"/data/art-files/"+idata , OUTDIR+"/"+idata.strip('.txt') , "xtalTree/xtal_info" , 2 )
+        print('sleep for 30 seconds ...')
+        time.sleep(30) # sleep for 30 seconds
