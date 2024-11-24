@@ -98,7 +98,16 @@ make skim
 
 Source code : ```src/skim.sh```
 
-#### Initial Phase 
+Once the local test is ok, run the production job:
+
+```
+python submission/skim_spacer_prod.py
+```
+
+The filelist can be define here : https://github.com/SiewYan/CaloCalibration/blob/main/submission/skim_spacer_prod.py#L100-L106
+Make sure the output direction is corrected defined to avoid writing files into other user folder.
+
+#### Initial Phase determination
 
 running the fit, example script is in ```test/fit.sh```. Code compilation is needed.
 
@@ -125,6 +134,10 @@ make fit
 
 Once the fit is run, produces a wiggle plot with the fit on, and the list of extracted parameters, 
 store in ```data```; The initial phase will be determined.
+
+Note:
+ - Data uses 9 parameter fit , ```-m blinded_9params```
+ - MC uses 5 parameter fit, ```-m blinded_5params```
 
 Next, do the validation of the phase (optional)
 
