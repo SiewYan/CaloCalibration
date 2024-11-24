@@ -132,7 +132,7 @@ make fit
 	--isMC
 ```
 
-Once the fit is run, produces a wiggle plot with the fit on, and the list of extracted parameters, 
+Once the fit is run, produces a wiggle plot with the fit on (the fit can be validated by eye, or reduce chi2 point 1), and the list of extracted parameters, 
 store in ```data```; The initial phase will be determined.
 
 Note:
