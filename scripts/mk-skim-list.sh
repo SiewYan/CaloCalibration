@@ -21,7 +21,7 @@ fi
 for ioffset in offset-0p00mm  offset-12p5mm  offset-25p0mm  offset-37p5mm  offset-50p0mm  offset-62p5mm  offset-75p0mm
 do
     echo creating list ${CWD}/data/${ioffset}.txt
-    ls ${DIRECTORY}/art-skim/${ioffset}/*/data/*.root > ${CWD}/data/${ioffset}.txt
+    find ${DIRECTORY}/art-skim/${ioffset}/*/data/ -type f -name "*.root" -size +1M > ${CWD}/data/${ioffset}.txt
 done
 
 # make Data
@@ -29,4 +29,33 @@ for irun in run60787  run60788  run60789  run60791  run60866  run60867  run60868
 do
     echo creating list ${CWD}/data/${irun}.txt
     ls ${DIRECTORY}/data/${irun}/*/*/data/*.root > ${CWD}/data/${irun}.txt
+done
+
+# DATA
+# spacer run
+COUNT=0
+echo creating list ${CWD}/data/spacer_run.txt
+for irun in 60866 60867 60868 60869 60870 60871
+do
+    ((COUNT++))
+    if [[ "$COUNT" == 1 ]]; then
+	ls ${DIRECTORY}/data/run${irun}/*/*/data/*.root > ${CWD}/data/spacer_run.txt
+    else
+	ls ${DIRECTORY}/data/run${irun}/*/*/data/*.root >> ${CWD}/data/spacer_run.txt
+    fi
+done
+
+
+# DATA
+# Reference run , missing 60790
+COUNT=0
+echo creating list ${CWD}/data/reference_run.txt
+for irun in 60787 60788 60789 60791 #60790
+do
+    ((COUNT++))
+    if [[ "$COUNT" == 1 ]]; then
+	ls ${DIRECTORY}/data/run${irun}/*/*/data/*.root > ${CWD}/data/reference_run.txt
+    else
+	ls ${DIRECTORY}/data/run${irun}/*/*/data/*.root >> ${CWD}/data/reference_run.txt
+    fi
 done

@@ -1,8 +1,10 @@
 import os
 import sys
 import subprocess
+import time
 
 CWD=os.getcwd()
+USER=os.getenv('USER')
 
 def submit_script(jobname_,command_,dryrun=True):
     abspath=os.path.abspath(jobname_)
@@ -84,8 +86,10 @@ pass
 
 if __name__ == "__main__":
 
-    if CWD != "/home/siew/gm2/df-spectrum":
-        print("run from df-spectrum folder")
+    OUTDIR="/lustre/collider/siew/study_v2/spacer/skim"
+
+    if CWD != "/home/%s/CaloCalibration" %USER :
+        print("please run from /home/$s/CaloCalibration" %USER)
         sys.exit(1)
 
     # "refresh" C++ executable before running
@@ -98,9 +102,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # mc
-    #for imc in [ 'offset-0p00mm.txt' , 'offset-12p5mm.txt' , 'offset-25p0mm.txt' , 'offset-37p5mm.txt' , 'offset-50p0mm.txt' , 'offset-62p5mm.txt' , 'offset-75p0mm.txt' ]:
-    #    skim( "/home/siew/gm2/df-spectrum/data/spacer/art-skim/"+imc , "/lustre/collider/siew/study_v2/spacer/pruned/"+imc.strip('.txt') , "GGAnalyzer/g2phase" , 2 )
+    for imc in [ 'offset-0p00mm.txt' , 'offset-12p5mm.txt' , 'offset-25p0mm.txt' , 'offset-37p5mm.txt' , 'offset-50p0mm.txt' , 'offset-62p5mm.txt' , 'offset-75p0mm.txt' ]:
+        skim( CWD+"/data/"+imc , OUTDIR+"/"+imc.strip('.txt') , "GGSpacerAnalyzer/g2phase" , 2 )
+        print('sleep for 30 seconds ...')
+        time.sleep(30) # sleep for 30 seconds 
 
     # data
-    for	idata in [ 'data-reference.txt' , 'data-spacer.txt' ]:
-        skim( "/home/siew/gm2/df-spectrum/data/spacer/art-skim/"+idata , "/lustre/collider/siew/study_v2/spacer/pruned/"+idata.strip('.txt') , "xtalTree/xtal_info" , 3 )
+    #for	idata in [ 'reference_run.txt' , 'spacer_run.txt' ]:
+    #    skim( CWD+"/data/"+idata , OUTDIR+"/"+idata.strip('.txt') , "xtalTree/xtal_info" , 2 )
+    #    print('sleep for 30 seconds ...')
+    #    time.sleep(30) # sleep for 30 seconds

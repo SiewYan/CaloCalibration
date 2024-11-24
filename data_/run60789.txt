@@ -1,0 +1,11 @@
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312526_60789.00162.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312527_60789.00201.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312528_60789.00044.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312529_60789.00302.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312530_60789.00240.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312531_60789.00221.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312532_60789.00148.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312533_60789.00197.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312534_60789.00303.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312535_60789.00019.root
+/lustre/collider/siew/study_v2/spacer/data/run60789/calospacer_run60789_gridRun/2024-07-08-10-59-09/data/gm2offline_ana_81312536_60789.00146.root
