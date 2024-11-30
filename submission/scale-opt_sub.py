@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+from spacer import spacers
 
 CWD=os.getcwd()
 DRYRUN=False
@@ -47,7 +48,14 @@ def submit_script(jobname_,command_,calo,dryrun=True):
 pass
     
 
-def submit(DATALIST_, DATACONDLIST_, ncalo, re=False, OUTFOLDER_="/lustre/collider/siew/energy-calibration/scale-opt/re"):
+def submit(
+        DATALIST_ ,
+        DATACONDLIST_ ,
+        MCLIST_,
+        MCCONDLIST_,
+        ncalo ,
+        OUTFOLDER_="/lustre/collider/siew/energy-calibration/scale-opt/re"
+):
 
     # make outskim folder
     if not os.path.exists(OUTFOLDER_): os.mkdir(OUTFOLDER_)
@@ -58,10 +66,11 @@ def submit(DATALIST_, DATACONDLIST_, ncalo, re=False, OUTFOLDER_="/lustre/collid
     NAME="%s/%s_calo-%s.sh" %( OUTFOLDER_, DATALIST_.split('/')[-1].strip('.txt'), ncalo )
     
     #MCLIST_="/home/siew/gm2/df-spectrum/data/skim/mc.txt"
-    MCLIST_="/home/siew/gm2/df-spectrum/data/materials/skim/gasgun.txt"
-    MCCONDLIST_="/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_gasgun_cond.txt"
+    #MCLIST_="/home/siew/gm2/df-spectrum/data/materials/skim/gasgun.txt"
+    #MCCONDLIST_="/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_gasgun_cond.txt"
 
-    EXEC="scale-opt-re" if re else "scale-opt"
+    #EXEC="scale-opt-re" if re else "scale-opt"
+    EXEC="scale-opt"
     COMMAND="%s/bin/%s -d %s -d %s -m %s -m %s -c ${NCALO} -x ${NXTAL}" %(
         CWD,
         EXEC,
@@ -75,8 +84,8 @@ pass
 
 if __name__ == "__main__":
 
-    if CWD != "/home/siew/gm2/df-spectrum":
-        print("run from df-spectrum folder")
+    if CWD != "/home/%s/CaloCalibration" %USER :
+        print("please run from /home/$s/CaloCalibration" %USER)
         sys.exit(1)
 
     # "refresh" C++ executable before running
@@ -102,39 +111,20 @@ if __name__ == "__main__":
     # Q4 : 20 , 21 , 22
     # collimater : 9 , 11 , 17 , 21 , 23
 
-    #theCalo=[ icalo for icalo in range(1,24) ]
-    #theCalo=[ 3 , 6 , 9 , 11 , 13 , 15 , 17 , 19 , 21 , 24 ]                                                                             
-    #theCalo=[ 1 , 3 , 6 , 13 , 24 ]
-    #theCalo= [ 2 , 4 , 5 , 7 , 8 , 10 , 12 , 14 , 16 , 18 , 20 , 22 , 23 , 24 ]
-    #theCalo=[ 1 , 3 , 6 , 13 , 24 ]
-    #theCalo=[ 6 ]
-    #theCalo=[ 1 , 3 , 6 , 9 , 16 , 13 , 19 , 22 , 24 ]
-    ###theCalo=[ 2 , 5 , 8 , 10 , 11 , 12 , 15 , 18 , 21 , 23 ]
-    theCalo=[ 20 , 4 , 17 , 7 , 14 ]
-    '''
-    # RW
+    theCalo=[ icalo for icalo in range(1,24) ]
+
+
+    #offset-0p00mm.txt  offset-12p5mm.txt  offset-25p0mm.txt  offset-37p5mm.txt  offset-50p0mm.txt  offset-62p5mm.txt  offset-75p0mm.txt  reference_run.txt  spacer_run.txt
     for icalo in theCalo:
 
-        # run4F
-        submit(
-            "/home/siew/gm2/df-spectrum/data/materials/skim/run4F_rw.txt",
-            "/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_run4F_rw_cond.txt",icalo)
+        offset= spacers[icalo].replace( "." , "p" )
 
-        # run5A
-        #submit(
-        #    "/home/siew/gm2/df-spectrum/data/materials/skim/run5A_rw.txt",
-        #    "/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_run5A_rw_cond.txt",icalo)
-    '''
-    
-    # RE
-    for icalo in theCalo:
-
-        # run5A
+        print('calo : ', icalo , " ; offset : ", offset, "mm" )
+        
         submit(
-            "/home/siew/gm2/df-spectrum/data/materials/skim/run5A_re.txt",
-            "/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_run5A_re_cond.txt",icalo,True)
-
-        # run4F
-        submit(
-            "/home/siew/gm2/df-spectrum/data/materials/skim/run4F_re.txt",
-            "/home/siew/gm2/df-spectrum/data/materials/fit-result/fit_run4F_re_cond.txt",icalo,True)
+            '/home/siew/CaloCalibration/data/skim-files/spacer_run.txt',
+            '/home/siew/CaloCalibration/data/fit-results/ ... ',
+            '/home/siew/CaloCalibration/data/skim-files/offset-%smm.txt' %offset,
+            '/home/siew/CaloCalibration/data/fit-results/offset-%smm_cond.txt' %offset
+            icalo
+            )

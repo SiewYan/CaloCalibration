@@ -41,7 +41,7 @@ doFit_5param () {
 }
 
 # DATA
-doFit_9param /home/siew/CaloCalibration/data/skim-files/reference_run.txt /home/siew/CaloCalibration/data/fit-results/reference_run.root
+#doFit_9param /home/siew/CaloCalibration/data/skim-files/reference_run.txt /home/siew/CaloCalibration/data/fit-results/reference_run.root
 #doFit_9param /home/siew/CaloCalibration/data/skim-files/spacer_run.txt /home/siew/CaloCalibration/data/fit-results/spacer_run.root
 
 #data
@@ -56,10 +56,10 @@ doFit_9param /home/siew/CaloCalibration/data/skim-files/reference_run.txt /home/
 
 # MC
 #doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-0p00mm.txt /home/siew/CaloCalibration/data/fit-results/offset-0p00mm.root
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-25p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-25p0mm.txt
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-50p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-50p0mm.txt
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-75p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-75p0mm.txt
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-12p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-12p5mm.txt
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-37p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-37p5mm.txt
-#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-62p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-62p5mm.txt
+doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-25p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-25p0mm.root
+#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-50p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-50p0mm.root
+#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-75p0mm.txt /home/siew/CaloCalibration/data/fit-results/offset-75p0mm.root
+#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-12p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-12p5mm.root
+#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-37p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-37p5mm.root
+#doFit_5param /home/siew/CaloCalibration/data/skim-files/offset-62p5mm.txt /home/siew/CaloCalibration/data/fit-results/offset-62p5mm.root
 
