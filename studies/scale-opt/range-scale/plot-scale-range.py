@@ -1,5 +1,3 @@
-#from ROOT import TH2D, TCanvas, gROOT, gStyle, TLine
-#import ROOT
 from array import array as arr
 import sys
 
@@ -33,7 +31,7 @@ def fix(df_):
                             'lfrc'  : round(ilow,2),
                             'ufrc'  : round(jup,2),
                             'range' : np.nan,
-                            'scale' : np.nan,
+                            'scale' : 0.5 if (ilow<jup) else None,
                             'dist'  : np.nan
                         }
                     ),
@@ -59,6 +57,8 @@ if __name__=="__main__":
     
     filename = sys.argv[1]
     outpath  = sys.argv[2]
+    recon    = sys.argv[3]
+    #recon    = "Recon East" if "re" in sys.argv[3] else "Recon West"
     #scale_calo10-xtal36_rw_run4f.txt
     config=filename.split('_')[1]
 
@@ -82,7 +82,7 @@ if __name__=="__main__":
     sdf = dummy(df)
     mean = round(sdf['scale'].mean(), 3)
     std =  round(sdf['scale'].std(), 3)
-    print(mean)
+    #print(mean)
     #print("Mean : ", mean)
     #print("S.D : ", std)
 
@@ -91,10 +91,11 @@ if __name__=="__main__":
     
     hm = sns.heatmap(data_matrix, annot=True, fmt='.2f', linewidths=.5, annot_kws={"size": 15}, vmin=0, vmax=1.2, ax=ax)
     hm.invert_yaxis()
-    hm.set_xlabel("Lower edge range (fraction)", fontsize = 15)
-    hm.set_ylabel("Upper edge range (fraction)", fontsize = 15)
+    hm.set_xlabel("Lower Bound", fontsize = 15)
+    hm.set_ylabel("Upper Bound", fontsize = 15)
     hm.figure.axes[-1].set_ylabel('KS-optimized scale', size=15)
-    plt.title("%s ; full range : %s MeV; Mean scale : %s" %(config,frange, mean), fontsize=20)
+    #plt.title("%s ; full range : %s MeV; Mean scale : %s" %(config,frange, mean), fontsize=20)
+    plt.title( "(%s) %s ; full range : %s MeV" %(recon, config, frange), fontsize=20 )
     #hm.text(0.6, 0.2, "Mean : ", mean )
     #plt.show()
     plt.savefig('%s/%s.png' %(outpath,config))
